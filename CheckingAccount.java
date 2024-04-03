@@ -49,15 +49,18 @@ public class CheckingAccount {
     public void withdraw(int transNumber, double amount){
         transList.add(new Transaction(transNumber, Transaction.getNextCount(), amount));
         balance -= amount;
+        transList.add(new Transaction(4, Transaction.getNextCount(), 0.15));
         addToTotalServiceCharge(0.15);
         summary = summary.concat("Transaction: Check in Amount of: " + df.format(amount) + "\n");
         summary = summary.concat("Service Charge: Check --- charge " + df.format(0.15) + "\n");
         if(balance < 500 && first500){
+            transList.add(new Transaction(4, Transaction.getNextCount(), 5));
             addToTotalServiceCharge(5);
             summary = summary.concat("Service Charge: Below $500 --- charge " + df.format(5.00) + "\n");
             first500 = false;
         }
         if(balance < 0){
+            transList.add(new Transaction(4, Transaction.getNextCount(), 10));
             addToTotalServiceCharge(10.0);
             summary = summary.concat("Service Charge: Below $0 --- charge " + df.format(10.0)) + "\n";
         }
@@ -65,6 +68,7 @@ public class CheckingAccount {
     public void deposit(int transNumber, double amount){
         transList.add(new Transaction(transNumber, Transaction.getNextCount(), amount));
         balance += amount;
+        transList.add(new Transaction(4, Transaction.getNextCount(), 0.10));
         addToTotalServiceCharge(0.10);
         summary = summary.concat("Transaction: Deposit in Amount of " + amount + "\n");
         summary = summary.concat("Total Balance: " + balance + "\n");

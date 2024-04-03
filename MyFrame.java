@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MyFrame extends JFrame implements ActionListener {
@@ -14,10 +15,13 @@ public class MyFrame extends JFrame implements ActionListener {
     JRadioButton listAllDeposits;
     CheckingAccount acct;
 
-    public MyFrame(CheckingAccount acct){
+    DecimalFormat df;
+
+    public MyFrame(CheckingAccount acct, DecimalFormat df){
         this.acct = acct;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new FlowLayout());
+        this.df = df;
 
         enterNewTransaction = new JRadioButton("Enter Transaction");
         listAllTransactions = new JRadioButton("List All Transactions");
@@ -80,7 +84,17 @@ public class MyFrame extends JFrame implements ActionListener {
             ArrayList<Transaction> temp = acct.getTransList();
             String message = "List all Transactions: \n ID\t Type\t Amount\n";
             for (Transaction transaction : temp) {
-                message = message.concat(transaction.getTransNumber() + "    " + transaction.getTransId() + "    " + transaction.getTransAmt() + "\n");
+                message = message.concat(transaction.getTransId() + "    ");
+                if(transaction.getTransNumber() == 1){
+                    message = message.concat("Check    ");
+                }
+                if(transaction.getTransNumber() == 2){
+                    message = message.concat("Deposit    ");
+                }
+                if(transaction.getTransNumber() == 4){
+                    message = message.concat("Svc. Crg.    ");
+                }
+                message = message.concat(df.format(transaction.getTransAmt()) + "\n");
             }
             JOptionPane.showMessageDialog(null, message);
         }
@@ -89,18 +103,20 @@ public class MyFrame extends JFrame implements ActionListener {
             String message = "List all Checks \n";
             for(Transaction transaction : temp){
                 if(transaction.getTransNumber() == 1){
-                    message = message.concat(transaction.getTransId() + "    " + transaction.getTransAmt());
+                    message = message.concat(transaction.getTransId() + "    " + df.format(transaction.getTransAmt()));
                 }
             }
+            JOptionPane.showMessageDialog(null, message);
         }
-        if(e.getSource() == listAllDeposits){
+        if(e.getSource() == listAllDeposits) {
             ArrayList<Transaction> temp = acct.getTransList();
             String message = "List all Deposits \n";
-            for(Transaction transaction : temp){
-                if(transaction.getTransNumber() == 2){
-                    message = message.concat(transaction.getTransId() + "    " + transaction.getTransAmt());
+            for (Transaction transaction : temp) {
+                if (transaction.getTransNumber() == 2) {
+                    message = message.concat(transaction.getTransId() + "    " + df.format(transaction.getTransAmt()));
                 }
             }
+            JOptionPane.showMessageDialog(null, message);
         }
     }
 }

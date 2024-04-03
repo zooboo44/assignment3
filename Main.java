@@ -10,7 +10,7 @@ public class Main {
         DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance();
         df.applyPattern(PATTERN1);
         CheckingAccount checking = new CheckingAccount(df);
-        MyFrame transButtons = new MyFrame(checking);
+        MyFrame transButtons = new MyFrame(checking, df);
         do {
             if(checking.getIsFirstTimeAccount()){
                 checking.setBalance(Double.parseDouble(JOptionPane.showInputDialog("Enter Initial Balance: ")));
